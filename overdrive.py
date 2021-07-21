@@ -74,14 +74,15 @@ class Overdrive:
         except btle.BTLEException as e:
             logging.getLogger("anki.overdrive").error(e.message)
 
-    def changeSpeed(self, speed, accel):
+    def changeSpeed(self, speed, accel, limit):
         """Change speed for Overdrive.
         
         Parameters:
-        speed -- Desired speed. (from 0 - 1000)
-        accel -- Desired acceleration. (from 0 - 1000)
+        speed -- Desired speed. (mm/sec, from 0 - 1000+)
+        accel -- Desired acceleration. (mm/sec^2, from 0 - 1000)
+        limit -- Respect road piece speed limit. (0 | 1)
         """
-        command = struct.pack("<BHHB", 0x24, speed, accel, 0x01)
+        command = struct.pack("<BHHB", 0x24, speed, accel, limit)
         self.sendCommand(command)
 
     def changeLaneRight(self, speed, accel):
